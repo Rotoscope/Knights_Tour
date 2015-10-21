@@ -28,11 +28,9 @@ int main(int argc, char** argv) {
 
     int horizontal[MOVE_SIZE] = {2, 1, -1, -2, -2, -1, 1, 2};
     int vertical[MOVE_SIZE] = {-1, -2, -2, -1, 1, 2, 2, 1};
-    int currentRow = 3;
-    int currentColumn = 6;
-    int count = 1, moveNumber = 0;
+    int count = 1, moveNumber = 0, full_tour = 0;
 
-    int accessibilityBoard[BOARD_SIZE][BOARD_SIZE] = {
+    const int accessibilityBoard[BOARD_SIZE][BOARD_SIZE] = {
 	{2, 3, 4, 4, 4, 4, 3, 2},
 	{3, 4, 6, 6, 6, 6, 4, 3},
 	{4, 6, 8, 8, 8, 8, 6, 4},
@@ -43,26 +41,40 @@ int main(int argc, char** argv) {
 	{2, 3, 4, 4, 4, 4, 3, 2}
     };
 
-    for (count = 1; count <= 64; count++) {
-	if (count != 1) {
-	    moveNumber = getHeuristicMove(currentRow, currentColumn, accessibilityBoard,
-		    horizontal, vertical);
+    int ab[BOARD_SIZE][BOARD_SIZE];
 
-	    if (moveNumber == MOVE_SIZE) break;
+    for (int tour_number = 0; tour_number < 64; tour_number++) {
+	int currentRow = (tour_number / 8) % 8;
+	int currentColumn = tour_number % 8;
 
-	    currentRow += horizontal[moveNumber];
-	    currentColumn += vertical[moveNumber];
+	//reset the access board
+	for (int i = 0; i < BOARD_SIZE; i++) {
+	    copy(accessibilityBoard[i], accessibilityBoard[i] + BOARD_SIZE, ab[i]);
 	}
-	reduceAssess(currentRow, currentColumn, accessibilityBoard,
-		horizontal, vertical);
 
-	//Record the latest count in each square the knight moves to.
-	chessBoard[currentRow][currentColumn] = count;
+	for (count = 0; count < 64; count++) {
+	    if (count != 0) {
+		moveNumber = getHeuristicMove(currentRow, currentColumn, ab,
+			horizontal, vertical);
+
+		if (moveNumber == MOVE_SIZE) break;
+
+		reduceAssess(currentRow, currentColumn, ab,
+			horizontal, vertical);
+
+		currentRow += horizontal[moveNumber];
+		currentColumn += vertical[moveNumber];
+	    }
+
+	    //Record the latest count in each square the knight moves to.
+	    chessBoard[currentRow][currentColumn] = count + 1;
+	}
+
+	if (count == 64) full_tour++;
+	memset(chessBoard, 0, sizeof (chessBoard[0][0]) * BOARD_SIZE * BOARD_SIZE);
     }
-    
-    display(accessibilityBoard);
-    display(chessBoard);
-    cout << "Total moves made : " << count - 1;
+
+    cout << "Total full tours made : " << full_tour << endl;
 
     system("pause");
     return 0;
