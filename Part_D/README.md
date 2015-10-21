@@ -1,6 +1,6 @@
 ## Knights_Tour
 CSU Long Beach
-CECS282 Knight's Tour Part B
+CECS282 Knight's Tour Part D
 
 ```
 Write a version of the Knight’s Tour program which, when encountering a tie between two or more

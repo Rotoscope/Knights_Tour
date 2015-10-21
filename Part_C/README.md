@@ -1,6 +1,6 @@
 ## Knights_Tour
 CSU Long Beach
-CECS282 Knight's Tour Part B
+CECS282 Knight's Tour Part C
 
 ```
 Now write a version of the Knight’s Tour program using the accessibility heuristic. At any time, the
