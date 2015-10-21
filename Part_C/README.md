@@ -12,5 +12,6 @@ program to run 64 tours, one starting from each square of the chessboard. How ma
 get?
 
 Output:
+Total full tours made : 63
 
 ```

@@ -9,5 +9,6 @@ squares. Your program should move to the square for which the next move would ar
 with the lowest accessibility number.
 
 Output:
+Total full tours made : 64
 
 ```
